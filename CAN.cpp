@@ -12,10 +12,10 @@ bool CAN_check(){ //requests temp, gets answer true, else false
     delay(100);
     CAN_FRAME framein;
     if (Can0.read(framein)){
-        return true
+        return true;
     }
     else{
-        return false
+        return false;
     }
 }
 

@@ -25,7 +25,7 @@
 #define TEMP_REQUEST        0x004B3D
 
 void CAN_setup();
-void CAN_check();
+bool CAN_check();
 void send_torque(int torque);
 void request_temp();
 int read_temp(CAN_FRAME &frame);
