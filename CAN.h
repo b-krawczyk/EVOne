@@ -1,3 +1,8 @@
+/*
+  CAN.h - Library for Bus-CAN communication for EVOne.
+  Bartosz Krawczyk, 05.02.2020
+*/
+
 #ifndef Morse_h
 #define Morse_h
 
