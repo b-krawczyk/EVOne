@@ -7,8 +7,16 @@ void CAN_setup(){
     Can0.watchFor();
 }
 
-void CAN_check(){
-    //request temp, if id agrres ok, else print and idle mode
+bool CAN_check(){ //requests temp, gets answer true, else false
+    request_temp();
+    delay(100);
+    CAN_FRAME framein;
+    if (Can0.read(framein)){
+        return true
+    }
+    else{
+        return false
+    }
 }
 
 void send_torque(int torque){
@@ -52,7 +60,7 @@ void read_frame(){
     while (Can0.available() > 0) {
         Can0.read(framein);
         
-        switch(framein.data.bytes[0]){
+        switch(framein.data.bytes[0]){ // checks the kind of input 
             case 0x4B:
                 read_temp(framein);
                 break;
