@@ -1,3 +1,8 @@
+/*
+  CAN.h - Library for Bus-CAN communication for EVOne.
+  Bartosz Krawczyk, 05.02.2020
+*/
+
 #include "CAN.h"
 
 void CAN_setup(){
