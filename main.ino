@@ -1,23 +1,29 @@
 #include "due_can.h"
-#include "CAN.h"
-#include "APPS.h"
-
-#define V_BRAKE 3.3
+#include "EVOne.h"
 
 bool safe = 1;
+extern int test_var;
 
 void setup() {
   Serial.begin(9600);
   CAN_setup();
-  safe = CAN_check();
+  if(CAN_check()){
+    Serial.println("CAN conncetion ok");
+  }
+  else{
+    //while(CAN_check() == 0){ // uncomment later
+    //  Serial.println("Establishing CAN connection");
+    //}
+  }
 
 }
 
 void loop() {
   float v0 = read_voltage0();
   float v1 = read_voltage1();
-  send_torque(v0);
+  send_voltage_to_torque(v0,v1,0);
   //use values to get torque and send it
+  Serial.println(test_var);
 
 }
 
@@ -40,17 +46,4 @@ float read_voltage0(){
   }
   
   return vR/5;
-}
-
-
-void send_voltage_to_torque(float v0, float v1, float vbrake){
-    // float v_out = scale_voltages(v0,v1);
-
-    if(vbrake < V_BRAKE){
-        send_torque(v_out);
-    }
-    else if(v_out > 0){
-        // diable enf
-        Serial.println("Brake on");
-    }
 }
