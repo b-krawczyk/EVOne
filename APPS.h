@@ -6,6 +6,8 @@
 #ifndef Morse_h
 #define Morse_h
 
+#include "due_can.h"
+
 //constants
 #define V1_MAX  1.74
 #define V1_MIN  0.08
@@ -15,7 +17,6 @@
 
 float calc_percent(float v, float v_max, float v_min);
 float avg(float v0, float v1);
-float scale_voltages(float v0, float v1);
-bool check_safety();
+int scale_voltages(float v0, float v1);
 
 #endif

@@ -14,16 +14,47 @@ float avg(float v0, float v1){
     return (v0+v1)/2;
 }
 
-float scale_voltages(float v0, float v1){ // gives value for torque
+int scale_voltages(float v0, float v1){ // gives value for torque
     float v0_per = calc_percent(v0, V0_MAX, V0_MIN);
     float v1_per = calc_percent(v1, V1_MAX, V1_MIN);
 
-    float v_per_avg = avg(v0_per, v1_per);
 
-    float v_scaled = int(SCALE_MAX*v_per_avg/100);
-    return v_scaled;
-}
+    if(abs(v0_per - v1_per) < 10){
+        float v_per_avg = avg(v0_per, v1_per);
 
-bool check_safety(){
-    // need to do this
+        if(v_per_avg < 0 && v_per_avg > -5){ // safty checks and upper/lower bound settings
+            v_per_avg = 0;
+        }
+        else if(abs(v_per_avg) < 5){
+            Serial.println("Dangerously low input");
+            // disable enf
+            return 0;
+        }
+
+        if(v_per_avg > 100 && v_per_avg < 105){
+            v_per_avg = 0;
+        }
+        else if(v_per_avg > 105){
+            Serial.println("Dangerously high input");
+            // disable enf
+            return 0;
+        }
+        int v_scaled = int(SCALE_MAX*v_per_avg/100);
+        return v_scaled;
+    }
+    else{
+        
+        delay(100);
+
+        if(abs(v0_per - v1_per)<10){
+            float v_per_avg = avg(v0_per, v1_per);
+
+            int v_scaled = int(SCALE_MAX*v_per_avg/100);
+            return v_scaled;
+        }
+        else{
+            Serial.println("Potentiometer reading too far appart");
+            return 0;
+        }
+    }
 }

@@ -1,6 +1,8 @@
 #include "due_can.h"
 #include "CAN.h"
-#include  "APPS.h"
+#include "APPS.h"
+
+#define V_BRAKE 3.3
 
 bool safe = 1;
 
@@ -14,7 +16,7 @@ void setup() {
 void loop() {
   float v0 = read_voltage0();
   float v1 = read_voltage1();
-
+  send_torque(v0);
   //use values to get torque and send it
 
 }
@@ -38,4 +40,17 @@ float read_voltage0(){
   }
   
   return vR/5;
+}
+
+
+void send_voltage_to_torque(float v0, float v1, float vbrake){
+    // float v_out = scale_voltages(v0,v1);
+
+    if(vbrake < V_BRAKE){
+        send_torque(v_out);
+    }
+    else if(v_out > 0){
+        // diable enf
+        Serial.println("Brake on");
+    }
 }
